@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Libro</title>
+    <link href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Nuevo Libro</h1>
+        <form method="post" th:action="@{/libro/nuevo/submit}" th:object="${libroForm}" enctype="multipart/form-data">
+        <!-- <div class="form-group">
+            <label for="id">Id:</label>
+            <input type="text" class="form-control" id="id" th:field="*{id}" />
+        </div> -->
+        <div class="form-group">
+            <label for="portada">Portada:</label>
+            <input type="file" class="form-control" id="portada" name="portada" />
+        </div>
+        <div class="form-group">
+            <label for="titulo">Título:</label>
+            <input type="text" class="form-control" id="titulo" th:field="*{titulo}" />
+        </div>
+        <div class="form-group">
+            <label for="ano">Año:</label>
+            <input type="date" class="form-control" id="año" th:field="*{año}" />
+        </div>
+        <div class="form-group">
+            <label for="autor">Autor:</label>
+            <input type="text" class="form-control" id="autor" th:field="*{autor}" />
+        </div>
+        <div class="form-group">
+            <label>Idioma:</label><br />
+            <div th:each="idi : ${T(bookadvisor.bookadvisor.domain.Idioma).values()}">
+                <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" name="button1" th:value="${idi}"
+                        th:field="*{idioma}" />
+                    <label class="form-check-label" th:text="${idi}"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="sipnosis">Sinopsis:</label>
+            <textarea class="form-control" id="sinopsis" th:field="*{sinopsis}"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="fechaAlta">Fecha de Alta:</label>
+            <input type="date" class="form-control" id="fechaDeAlta" th:field="*{fechaDeAlta}" />
+        </div>
+        <!--   <div class="form-group">
+            <label for="genero">Género:</label>
+            <input type="text" class="form-control" id="genero" th:field="*{genero}" />
+        </div>
+    -->
+    <div class="form-group">
+        <label for="genero">Género:</label>
+        <select class="form-control" id="genero" th:field="*{genero.id}">
+          <option value="" disabled selected>Selecciona un género</option>
+          <option th:each="gen : ${generos}" th:value="${gen.id}" th:text="${gen.nombre}"></option>
+        </select>
+      </div>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+    </form>
+        <a th:href="@{/libro/list}" class="btn btn-link mt-3">Inicio</a>
+    </div>
+
+</body>
+
+
+</html>

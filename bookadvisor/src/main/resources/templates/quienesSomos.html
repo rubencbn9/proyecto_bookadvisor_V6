@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quienes somos</title>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+
+</head>
+<body>
+    <nav th:replace="~{/fragments/navBar.html::navegacion}"></nav>
+    <div class="container py-5">
+        <div class="row">
+          <div class="col-lg-8 offset-lg-2">
+            <div class="text-center mb-4">
+              <h1 class="display-4 text-primary">Quiénes Somos</h1>
+            </div>
+            <p class="lead text-muted">
+              En <strong>BookAdvisor</strong>, somos un equipo de apasionados lectores y expertos en literatura que creemos en el poder transformador de los libros. Nuestra misión es ofrecerte una plataforma donde puedas descubrir, compartir y disfrutar de las mejores recomendaciones literarias adaptadas a tus gustos e intereses.
+            </p>
+            <p class="lead text-muted">
+              Nos enorgullece ser un lugar de encuentro para los amantes de los libros, donde cada recomendación está cuidadosamente seleccionada para ayudarte a encontrar tu próxima lectura favorita. Ya sea que busques un nuevo bestseller, una joya oculta o un clásico atemporal, BookAdvisor es el espacio ideal para explorar, aprender y disfrutar de la literatura.
+            </p>
+            <p class="lead text-muted">
+              Únete a nuestra comunidad de lectores y comienza a compartir tus opiniones, reseñas y experiencias literarias con personas que, como tú, comparten la misma pasión por la lectura.
+            </p>
+            <div class="text-center mt-5">
+              <p class="font-weight-bold">¡Bienvenido a BookAdvisor, tu próximo libro te está esperando!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+        <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+</body>
+<footer th:replace="~{/fragments/footer.html::menu}"></footer>
+</html>

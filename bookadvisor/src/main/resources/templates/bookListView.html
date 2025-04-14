@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css}" rel="stylesheet">
+
+</head>
+
+<body>
+    <nav th:replace="~{/fragments/navBar.html::navegacion}"></nav>
+    <h1>Biblioteca</h1>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <!-- formulario busqueda por nombre -->
+
+    <form method="post" th:action="@{/libro/findByName}" th:object="${findForm}">
+        <label>Buscar por Titulo:
+            <input type="text" name="nombre" th:field="*{titulo}" />
+        </label>
+        <input type="submit" value="Buscar" />
+    </form> <br>
+
+    <!-- formulario busqueda por genero-->
+    <!-- <div>
+    <select id="genero" onChange="changeGenero();">
+        <option value="">Todos</option>
+        <option th:each="gen : ${T(bookadvisor.bookadvisor.domain.Genero).values()}"
+        th:value="${gen}" th:text="${gen}"
+        th:selected="${gen} == ${generoSeleccionado} ? true : false"></option>
+        </select>
+        <script>
+        function changeGenero(){
+        const select = document.getElementById("genero");
+        if (select.value == "") window.location.href = "/";
+        else window.location.href = "/findByGenero/"+select.value;
+        }
+        </script> <br>
+
+</div>  -->
+
+    <div class="form-group">
+        <label for="genero">Género</label>
+        <select id="genero" class="form-control" onChange="changeGenero();">
+            <option value="">Todos</option>
+            <option th:each="gen : ${listaGeneros}" th:value="${gen.id}" th:text="${gen.nombre}"
+                th:selected="${gen.id} == ${generoSeleccionado} ? true : false"></option>
+        </select>
+
+
+    </div>
+
+    <script>
+        function changeGenero() {
+            const select = document.getElementById("genero");
+            if (select.value == "") window.location.href = "/";
+            else window.location.href = "/findByGenero/" + select.value;
+        }
+    </script>
+
+
+    <a th:href="@{/libro/list}">Restablecer</a><br />
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th class>ID</th>
+                <th>Portada</th>
+                <th>Titulo</th>
+                <th>Autor</th>
+                <th>Sinopsis</th>
+                <th>Idioma</th>
+                <th>puntos</th>
+                <th>Editar</th>
+                <th>Borrar</th>
+                <th>Valorar</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="table-info" th:each="libro : ${listaLibros}">
+                <td th:text="${libro.id}">Id</td>
+                <td>
+                    <img th:src="'/files/'+${libro.rutaFoto}" width="64px" />
+                </td>
+                <td><a th:href="@{/libro/{id}(id=${libro.id})}" th:text="${libro.titulo}">Titulo</a></td>
+                <td th:text="${libro.autor}">Autor</td>
+
+                <td th:text="${libro.sinopsis}">Sinopsis</td>
+                <td th:text="${libro.idioma}">Idioma</td>
+                <td
+                    th:text="${medias[libro.id]} != null ? ${#numbers.formatDecimal(medias[libro.id], 1, 1)} : 'Sin valoración'">
+                    Media</td>
+                <td><a th:href="@{/libro/editar/{id}(id=${libro.id})}" class="btn btn-primary"><i
+                            class="bi bi-pencil"></i>Editar</a></td>
+                <td><a th:href="@{/libro/borrar/{id}(id=${libro.id})}" class="btn btn-danger"><i
+                            class="bi bi-trash"></i>Borrar</a></td>
+                <td><a class="btn btn-success mb-3" th:href="@{/valoracion/nueva(libroId=${libro.id})}">Valoración</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/libro/nuevo}" class="btn btn-primary">Añadir libro</a>
+    <a th:href="@{/libro/list}" class="btn btn-link mt-3">Inicio</a>
+
+</body>
+
+</html>

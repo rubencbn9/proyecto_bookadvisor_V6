@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Lista de Valoraciones</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Lista de Valoraciones</h1>
+        <div th:if="${msg != null}" class="alert alert-danger" role="alert">
+            <span th:text="${msg}">Error</span>
+        </div>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID del Libro</th>
+                    <th>Usuario</th>
+                    <th>Puntuación</th>
+                    <th>Comentarios</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="valoracion : ${valoraciones}">
+                    <td th:text="${valoracion.libro.id}">ID del Libro</td>
+                    <td th:text="${valoracion.usuario.nombre}">Nombre de Usuario</td>
+                    <td th:text="${valoracion.puntuacion}">Puntuación</td>
+                    <td th:text="${valoracion.comentario}">Comentarios</td>
+                    <td>
+                        <form th:action="@{/valoraciones/{id}(id=${valoracion.id})}" method="post">
+                            <input type="hidden" name="_method" value="delete"/>
+                            <button type="submit" class="btn btn-danger">Borrar</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <a class="btn btn-secondary" th:href="@{/}">Inicio</a>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

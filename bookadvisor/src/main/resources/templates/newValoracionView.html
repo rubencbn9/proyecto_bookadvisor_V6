@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nueva Valoración</title>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+
+<body>
+<nav th:replace="~{/fragments/navBar.html::navegacion}"></nav>
+
+<div class="container mt-5">
+    <h1 class="mb-4">Valorar libro: <span th:text="${libro.titulo}"></span></h1>
+
+    <form th:action="@{/valoracion/nueva/submit}" th:object="${valoracionForm}" method="post">
+
+        <!-- Usuario (solo lectura) -->
+        <div class="form-group">
+            <label for="usuario">Usuario</label>
+            <input type="text" class="form-control" id="usuario" th:value="${usuario.nombre}" readonly/>
+        </div>
+
+        <!-- ID del libro oculto -->
+        <input type="hidden" th:field="*{libro.id}" />
+
+        <!-- Puntuación -->
+        <div class="form-group">
+            <label for="puntuacion">Puntuación</label>
+            <input type="number" class="form-control" id="puntuacion" th:field="*{puntuacion}" min="1" max="5" required/>
+        </div>
+
+        <!-- Comentario -->
+        <div class="form-group">
+            <label for="comentario">Comentario</label>
+            <textarea class="form-control" id="comentario" th:field="*{comentario}" ></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a class="btn btn-secondary ml-2" th:href="@{/valoracion}">Cancelar</a>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

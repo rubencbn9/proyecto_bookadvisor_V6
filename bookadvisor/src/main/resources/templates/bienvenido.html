@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.thymeleaf.orge">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenido</title>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+
+<body>
+    <nav th:replace="~{/fragments/navBar.html::navegacion}"></nav>
+    <div class="container py-5">
+        <div class="row">
+          <div class="col-lg-10 offset-lg-1 text-center">
+            <h1 class="display-4 text-primary mb-4">Bienvenido a BookAdvisor, tu guía para descubrir nuevas historias</h1>
+            <p class="lead text-muted mb-4">
+              En <strong>BookAdvisor</strong>, queremos que cada visita sea una aventura literaria. Explora miles de recomendaciones personalizadas, encuentra reseñas de lectores como tú y únete a una comunidad que comparte tu amor por los libros.
+            </p>
+            <p class="lead text-muted">
+              Descubre, aprende y comparte tus lecturas favoritas: en BookAdvisor, tu próxima historia está a solo un clic de distancia.
+            </p>
+            <a th:href="@{/proximamente}" class="btn btn-primary btn-lg mt-4">Explorar libros</a>
+          </div>
+        </div>
+      </div>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+</body>
+<footer th:replace="~{/fragments/footer.html::menu}">
+     
+</footer>
+
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del Libro</title>
+    <link href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .book-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .book-info {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            margin-left: 20px;
+        }
+
+        .book-image {
+            flex-shrink: 0;
+            width: 120px;
+            height: 180px;
+            object-fit: cover;
+            margin-right: 20px;
+        }
+
+        .buttons {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Detalle del Libro</h1>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-between mb-3">
+                    <h3 th:text="${libro.titulo}">Título del libro</h3>
+                    <a th:href="@{/}" class="btn btn-link mt-3">Inicio</a>
+                </div>
+
+                <!-- Información del libro -->
+                <div class="book-row">
+                    <!-- Portada del libro a la izquierda (más grande) -->
+                    <img th:src="'/public/files/'+${libro.rutaFoto}" alt="Imagen del libro" class="book-image" />
+
+                    <!-- Información del libro -->
+                    <div class="book-info">
+                        <h5>
+                            <span th:text="${libro.titulo}">Titulo</span>
+                        </h5>
+                        <p><strong>Año:</strong> <span th:text="${libro.año}">Año</span></p>
+                        <p><strong>Autor:</strong> <span th:text="${libro.autor}">Autor</span></p>
+                        <p><strong>Sinopsis:</strong> <span th:text="${libro.sinopsis}">Sinopsis</span></p>
+                        <p><strong>Idioma:</strong> <span th:text="${libro.idioma}">Idioma</span></p>
+                        <p><strong>Fecha de registro:</strong> <span th:text="${libro.fechaDeAlta}">Fecha de alta</span></p>
+                        <p><strong>Género:</strong> <span th:text="${libro.genero}">Género</span></p>
+                        <p><strong>Cantidad de Votantes:</strong> <span >Votantes</span></p>
+                        <p><strong>Suma de Puntos:</strong> <span th:text="${medias} != null ? ${#numbers.formatDecimal(medias[libro.id], 1, 1)} : 'Sin valoración'">Suma de Puntos</span></p>
+                        <p><strong>Puntos:</strong> <span >Puntos</span></p>
+
+                        <!-- Media de valoraciones (con validación de null) -->
+                        <p>
+                            <strong>Valoración Media:</strong>
+                            <span th:text="${medias != null ? #numbers.formatDecimal(medias[libro.id], 1, 1) : 'Sin valoración'}">Valoración</span>
+                        </p>
+
+                        <!-- Botones de acción (Editar y Borrar) -->
+                        <div class="buttons">
+                            <a th:href="@{/libro/{id}/editar(id=${libro.id})}" class="btn btn-warning btn-sm">Editar</a>
+                            <form th:action="@{/libro/{id}/borrar(id=${libro.id})}" method="post" class="d-inline">
+                                <input type="hidden" name="_method" value="delete"/>
+                                <button type="submit" class="btn btn-danger btn-sm">Borrar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="/webjars/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

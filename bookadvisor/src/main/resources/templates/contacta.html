@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario de Contacto</title>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+
+</head>
+<body>
+    <h1>Contacta con nosotros</h1>
+    <nav th:replace="~{/fragments/navBar.html::navegacion}"></nav>
+    <form th:action="@{/contacta/submit}" method="post">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <p>Selecciona motivo:</p>
+        <input type="radio" id="queja" name="motivo" value="queja" required>
+        <label for="queja">Queja</label><br>
+        <input type="radio" id="consulta" name="motivo" value="consulta">
+        <label for="consulta">Consulta</label><br>
+        <input type="radio" id="Otro" name="motivo" value="Otro">
+        <label for="Otro">Otro</label><br>
+
+        <label for="motivo">Amplia informacion del motivo:</label><br>
+        <textarea id="motivo" name="motivo" required></textarea><br>
+
+        <input type="checkbox" id="condiciones" name="condiciones" required>
+        <label for="condiciones">Acepto las condiciones de servicio</label><br>
+
+        <button type="submit">Enviar</button>
+    </form>
+</body>
+</html>

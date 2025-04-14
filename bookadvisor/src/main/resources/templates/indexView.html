@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookAdvisor</title>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    
+
+
+</head>
+<body>
+    <nav th:replace="~{/fragments/navBar.html::navegacion}"></nav>
+    <img class="rounded mx-auto d-block img-fluid" width="400px" th:src="@{/images/logo para BookAdvisor en resolución 2K.png}" alt="">
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+</body>
+<footer th:replace="~{/fragments/footer.html::menu}"></footer>
+</html>

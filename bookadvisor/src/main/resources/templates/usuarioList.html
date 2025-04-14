@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lista de Usuarios</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+</head>
+
+
+<nav th:replace="~{/fragments/navBar.html::navegacion}"></nav>
+<body>
+  <div class="container mt-5">
+    <h1 class="mb-4">Lista de Usuarios</h1>
+    <div th:if="${msg != null}" class="alert alert-danger" role="alert">
+      <span th:text="${msg}">Error</span>
+    </div>
+    <table class="table table-striped">
+      <thead class="thead-dark">
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="usuario : ${usuarios}">
+          <td th:text="${usuario.id}">Id</td>
+          <td th:text="${usuario.nombre}">Nombre</td>
+          <td th:text="${usuario.email}">Email</td>
+          <td>
+            <a class="btn btn-primary" th:href="@{/usuario/editar/{id}(id=${usuario.id})}">Editar</a>
+            <form th:action="@{/usuario/borrar/{id}(id=${usuario.id})}" method="post" style="display:inline;">
+              <button type="submit" class="btn btn-danger">Borrar</button>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <a class="btn btn-success" th:href="@{/usuario/nuevo}">Crear Nuevo Usuario</a>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
