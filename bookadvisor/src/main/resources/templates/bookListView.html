@@ -82,7 +82,7 @@
             <tr class="table-info" th:each="libro : ${listaLibros}">
                 <td th:text="${libro.id}">Id</td>
                 <td>
-                    <img th:src="'/files/'+${libro.rutaFoto}" width="64px" />
+                    <img th:src="'/libro/files/'+${libro.rutaFoto}" width="64px" />
                 </td>
                 <td><a th:href="@{/libro/{id}(id=${libro.id})}" th:text="${libro.titulo}">Titulo</a></td>
                 <td th:text="${libro.autor}">Autor</td>
