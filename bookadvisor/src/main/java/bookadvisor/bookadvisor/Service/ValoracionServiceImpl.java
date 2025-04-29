@@ -1,6 +1,8 @@
 package bookadvisor.bookadvisor.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,4 +57,46 @@ public class ValoracionServiceImpl implements ValoracionService {
 
         valoracionRepository.deleteById(id);
     }
+
+    public Map<Long, Integer> obtenerSumaDePuntosPorLibro() {
+    Map<Long, Integer> sumas = new HashMap<>();
+    List<Valoracion> valoraciones = valoracionRepository.findAll();
+
+    for (Valoracion v : valoraciones) {
+        Long libroId = v.getLibro().getId();
+        sumas.merge(libroId, v.getPuntuacion(), Integer::sum);
+    }
+
+    return sumas;
+}
+
+public Map<Long, Integer> obtenerCantidadDeVotantesPorLibro() {
+    Map<Long, Integer> votantes = new HashMap<>();
+    List<Valoracion> valoraciones = valoracionRepository.findAll();
+
+    for (Valoracion v : valoraciones) {
+        Long libroId = v.getLibro().getId();
+        votantes.merge(libroId, 1, Integer::sum);
+    }
+
+    return votantes;
+}
+
+public Map<Long, Double> obtenerMediaDePuntuacionPorLibro() {
+    Map<Long, Double> medias = new HashMap<>();
+    Map<Long, Integer> sumas = obtenerSumaDePuntosPorLibro();
+    Map<Long, Integer> votantes = obtenerCantidadDeVotantesPorLibro();
+
+    for (Long libroId : sumas.keySet()) {
+        int suma = sumas.get(libroId);
+        int cantidad = votantes.get(libroId);
+        medias.put(libroId, (double) suma / cantidad);
+    }
+
+    return medias;
+}
+
+public List<Valoracion> obtenerPorLibroId (Long id){
+    return valoracionRepository.findByLibroId(id);
+}
 }

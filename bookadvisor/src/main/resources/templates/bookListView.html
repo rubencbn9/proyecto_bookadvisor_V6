@@ -16,12 +16,13 @@
 
     <!-- formulario busqueda por nombre -->
 
-    <form method="post" th:action="@{/libro/findByName}" th:object="${findForm}">
-        <label>Buscar por Titulo:
-            <input type="text" name="nombre" th:field="*{titulo}" />
-        </label>
-        <input type="submit" value="Buscar" />
-    </form> <br>
+    <form th:action="@{/libro/findByName}" method="post" th:object="${findForm}" class="form-inline mb-3">
+        <div class="form-group">
+            <input type="text" th:field="*{titulo}" class="form-control" placeholder="Buscar por título" />
+        </div>
+        <button type="submit" class="btn btn-primary ms-2">Buscar</button>
+    </form>
+    
 
     <!-- formulario busqueda por genero-->
     <!-- <div>

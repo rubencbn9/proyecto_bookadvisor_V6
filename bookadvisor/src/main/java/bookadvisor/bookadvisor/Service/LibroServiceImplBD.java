@@ -2,11 +2,9 @@ package bookadvisor.bookadvisor.Service;
 
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -19,7 +17,6 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import bookadvisor.bookadvisor.domain.FormInfo;
@@ -122,7 +119,7 @@ public class LibroServiceImplBD implements LibroService {
     //    } catch (Exception e) {
     //     throw new RuntimeException("Error al añadir el libro con ID " + libro.getId(), e);
     // }
-    if(!file.isEmpty()){
+    if(file != null && !file.isEmpty()){
         try{
             String nombreImagen= fileStorageService.store(file);
             libro.setRutaFoto(nombreImagen);
@@ -132,6 +129,11 @@ public class LibroServiceImplBD implements LibroService {
     }
     return libroRepository.save(libro);
     }
+
+    public Libro añadir(Libro libro) {
+        return añadir(libro, null); // llama al método principal pasando null como imagen
+    }
+    
 
     public Libro editar(Libro libro, MultipartFile file) {
         // try  {

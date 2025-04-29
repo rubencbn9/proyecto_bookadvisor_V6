@@ -47,5 +47,8 @@ public interface LibroService {
 
       void borrarImagen(Long id);
 
+      Libro añadir(Libro libro);
+    
+
 
 }

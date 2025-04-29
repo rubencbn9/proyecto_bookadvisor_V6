@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Géneros</title>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet" />
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav th:replace="~{/fragments/navBar.html::navegacion}"></nav>
+
+    <div class="container py-5">
+        <h1 class="mb-4">Lista de Géneros</h1>
+
+        <a th:href="@{/genero/nuevo}" class="btn btn-primary mb-3">Crear nuevo género</a>
+
+        <table class="table table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="genero : ${generos}">
+                    <td th:text="${genero.id}">1</td>
+                    <td th:text="${genero.nombre}">Fantasía</td>
+                    <td>
+                        <a th:href="@{/genero/editar/{id}(id=${genero.id})}" class="btn btn-sm btn-warning">Editar</a>
+                        <form th:action="@{/genero/borrar/{id}(id=${genero.id})}" method="post" style="display:inline-block;">
+                            <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Footer -->
+    <footer th:replace="~{/fragments/footer.html::menu}"></footer>
+
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

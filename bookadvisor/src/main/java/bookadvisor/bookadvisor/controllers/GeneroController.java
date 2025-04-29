@@ -48,17 +48,17 @@ public class GeneroController {
         return "redirect:/genero/";
     }
 
-    // Obtener un género por ID y mostrar el formulario de edición
-    @GetMapping("/editar/{id}")
-    public String mostrarFormularioDeEdicion(@PathVariable Long id, Model model) {
-        Optional<Genero> generoOpt = generoService.obtenerGeneroPorId(id);
-        if (generoOpt.isPresent()) {
-            model.addAttribute("genero", generoOpt.get());
-            return "genero/formularioGenero";
-        } else {
-            return "redirect:/generos";
-        }
+// EDITAR formulario (usa 'generoForm' también aquí)
+@GetMapping("/editar/{id}")
+public String mostrarFormularioDeEdicion(@PathVariable Long id, Model model) {
+    Optional<Genero> generoOpt = generoService.obtenerGeneroPorId(id);
+    if (generoOpt.isPresent()) {
+        model.addAttribute("generoForm", generoOpt.get()); // usa el mismo nombre que en 'nuevo'
+        return "formularioGenero";
+    } else {
+        return "redirect:/genero/";
     }
+}
 
     // Actualizar un género existente
     @PostMapping("/editar")

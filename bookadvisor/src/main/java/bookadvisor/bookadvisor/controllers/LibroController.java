@@ -19,9 +19,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import bookadvisor.bookadvisor.Service.FileStorageService;
 import bookadvisor.bookadvisor.Service.LibroService;
+import bookadvisor.bookadvisor.Service.ValoracionService;
 import bookadvisor.bookadvisor.domain.Genero;
 import bookadvisor.bookadvisor.domain.Libro;
 import bookadvisor.bookadvisor.domain.LibroDTO;
+import bookadvisor.bookadvisor.domain.Valoracion;
 import jakarta.validation.Valid;
 
 @Controller
@@ -30,6 +32,9 @@ public class LibroController {
 
     @Autowired
     LibroService libroService;
+
+    @Autowired
+    ValoracionService valoracionService;
 
     @Autowired
     FileStorageService fileStorageService;
@@ -68,11 +73,34 @@ public class LibroController {
     public String showElement(@PathVariable long id, Model model) {
         try {
             Libro libro = libroService.obtenerPorId(id);
+
+            // Obtener y preparar estadísticas solo para este libro
+            Double media = libroService.obtenerMediaValoracion(id);
+            if (media == null) {
+                media = 0.0;  // Valor por defecto si no hay valoraciones
+            }
+            int sumaPuntos = valoracionService.obtenerSumaDePuntosPorLibro().getOrDefault(id, 0);
+            int cantidadVotantes = valoracionService.obtenerCantidadDeVotantesPorLibro().getOrDefault(id, 0);
+
+            List<Valoracion> valoraciones = valoracionService.obtenerPorLibroId(id);
+            Map<Long, Integer> votantes = new HashMap<>();
+            votantes.put(id, cantidadVotantes);
+
+            Map<Long, Integer> sumas = new HashMap<>();
+            sumas.put(id, sumaPuntos);
+            model.addAttribute("sumas", sumas);
+
             Map<Long, Double> medias = new HashMap<>();
-            medias.put(libro.getId(), libroService.obtenerMediaValoracion(id));
+          
+            medias.put(id, media);
+            model.addAttribute("medias", medias);
 
             model.addAttribute("libro", libro);
-            model.addAttribute("medias", medias);
+            model.addAttribute("media", media);
+            model.addAttribute("sumaPuntos", sumaPuntos);
+            model.addAttribute("cantidadVotantes", cantidadVotantes);
+            model.addAttribute("valoraciones", valoraciones);
+            model.addAttribute("votantes", votantes);
 
             return "bookView";
         } catch (RuntimeException e) {
@@ -190,12 +218,39 @@ public class LibroController {
         return "bookListView"; // Vista con el formulario
     }
 
+    // @PostMapping("/findByName")
+    // public String showFindByNameSubmit(Libro libroForm, Model model) {
+    //     model.addAttribute("findForm", libroForm);
+    //     model.addAttribute("listaLibros", libroService.buscarPorTitulo(libroForm.getTitulo()));
+    //     return "bookListView";
+    // }
+
     @PostMapping("/findByName")
-    public String showFindByNameSubmit(Libro libroForm, Model model) {
-        model.addAttribute("findForm", libroForm);
-        model.addAttribute("listaLibros", libroService.buscarPorTitulo(libroForm.getTitulo()));
-        return "bookListView";
+public String showFindByNameSubmit(Libro libroForm, Model model) {
+    model.addAttribute("findForm", libroForm);
+
+    List<Libro> libros = libroService.buscarPorTitulo(libroForm.getTitulo());
+    model.addAttribute("listaLibros", libros);
+
+    // Añadir estadísticas para evitar errores en la vista
+    Map<Long, Double> medias = new HashMap<>();
+    Map<Long, Integer> sumas = new HashMap<>();
+    Map<Long, Integer> votantes = new HashMap<>();
+
+    for (Libro libro : libros) {
+        Long id = libro.getId();
+        medias.put(id, libroService.obtenerMediaValoracion(id));
+        sumas.put(id, valoracionService.obtenerSumaDePuntosPorLibro().getOrDefault(id, 0));
+        votantes.put(id, valoracionService.obtenerCantidadDeVotantesPorLibro().getOrDefault(id, 0));
     }
+
+    model.addAttribute("medias", medias);
+    model.addAttribute("sumas", sumas);
+    model.addAttribute("votantes", votantes);
+
+    return "bookListView";
+}
+
 
     @GetMapping("/findByGenero/{genero}")
     public String showFindByGenero(@PathVariable Genero genero, Model model) {

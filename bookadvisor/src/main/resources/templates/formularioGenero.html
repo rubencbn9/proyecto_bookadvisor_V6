@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario de Género</title>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet" />
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav th:replace="~{/fragments/navBar.html::navegacion}"></nav>
+
+    <div class="container py-5">
+        <h2 th:text="${generoForm != null and generoForm.id != null ? 'Editar Género' : 'Nuevo Género'}"
+            class="mb-4"></h2>
+
+            <form th:action="${generoForm.id != null} ? @{/genero/editar} : @{/genero/nuevo/submit}" 
+            th:object="${generoForm}" 
+            method="post">
+      
+
+            <input type="hidden" th:field="*{id}" />
+
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" th:field="*{nombre}" class="form-control" required />
+
+                <div class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
+            </div>
+
+            <button type="submit" class="btn btn-success">Guardar</button>
+            <a th:href="@{/genero/}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <footer th:replace="~{/fragments/footer.html::menu}"></footer>
+
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

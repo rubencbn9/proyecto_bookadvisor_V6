@@ -61,19 +61,26 @@
                         <p><strong>Idioma:</strong> <span th:text="${libro.idioma}">Idioma</span></p>
                         <p><strong>Fecha de registro:</strong> <span th:text="${libro.fechaDeAlta}">Fecha de alta</span></p>
                         <p><strong>Género:</strong> <span th:text="${libro.genero}">Género</span></p>
-                        <p><strong>Cantidad de Votantes:</strong> <span >Votantes</span></p>
-                        <p><strong>Suma de Puntos:</strong> <span th:text="${medias} != null ? ${#numbers.formatDecimal(medias[libro.id], 1, 1)} : 'Sin valoración'">Suma de Puntos</span></p>
-                        <p><strong>Puntos:</strong> <span >Puntos</span></p>
+                        
+                        <!-- Mostrar la cantidad de votantes y la suma de puntos -->
+                        <p><strong>Cantidad de Votantes:</strong> 
+                            <span th:text="${votantes != null and votantes[libro.id] != null ? votantes[libro.id] : 'Sin votos'}"></span>
+
+                        </p>
+
+                        <p><strong>Suma de Puntos:</strong> 
+                            <span th:text="${sumas[libro.id] != null ? sumas[libro.id] : 'Sin votos'}">Suma</span>
+                        </p>
 
                         <!-- Media de valoraciones (con validación de null) -->
                         <p>
                             <strong>Valoración Media:</strong>
-                            <span th:text="${medias != null ? #numbers.formatDecimal(medias[libro.id], 1, 1) : 'Sin valoración'}">Valoración</span>
+                            <span th:text="${medias[libro.id] != null ? #numbers.formatDecimal(medias[libro.id], 1, 1) : 'Sin valoración'}">Valoración</span>
                         </p>
 
                         <!-- Botones de acción (Editar y Borrar) -->
                         <div class="buttons">
-                            <a th:href="@{/libro/{id}/editar(id=${libro.id})}" class="btn btn-warning btn-sm">Editar</a>
+                            <a th:href="@{/libro/editar/{id}(id=${libro.id})}" class="btn btn-warning btn-sm">Editar</a>
                             <form th:action="@{/libro/{id}/borrar(id=${libro.id})}" method="post" class="d-inline">
                                 <input type="hidden" name="_method" value="delete"/>
                                 <button type="submit" class="btn btn-danger btn-sm">Borrar</button>
