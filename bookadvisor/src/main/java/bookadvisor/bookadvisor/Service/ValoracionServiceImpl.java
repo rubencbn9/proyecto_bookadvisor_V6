@@ -99,4 +99,9 @@ public Map<Long, Double> obtenerMediaDePuntuacionPorLibro() {
 public List<Valoracion> obtenerPorLibroId (Long id){
     return valoracionRepository.findByLibroId(id);
 }
+
+public List<Valoracion>obtenerPorUsuario (Long id){
+    return valoracionRepository.findByUsuarioId(id);
+}
+
 }

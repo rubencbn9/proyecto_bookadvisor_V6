@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
+<html lang="es" xmlns:th="https://thymeleaf.org">
+<html lang="es" xmlns:sec="https://thymeleaf.org/thymeleaf-extras-springsecurity">
+    
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -54,7 +55,7 @@
                     <label for="genero">Género:</label>
                     <select class="form-control" id="genero" th:field="*{genero.id}">
                       <option value="" disabled selected>Selecciona un género</option>
-                      <option th:each="gen : ${generos}" th:value="${gen.id}" th:text="${gen.nombre}"></option>
+                      <option th:each="gen : ${listaGeneros}" th:value="${gen.id}" th:text="${gen.nombre}"></option>
                     </select>
                   </div>
 

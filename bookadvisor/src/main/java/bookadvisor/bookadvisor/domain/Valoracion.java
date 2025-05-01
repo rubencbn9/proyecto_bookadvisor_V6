@@ -31,4 +31,6 @@ public class Valoracion {
     @ManyToOne
     @JoinColumn(name = "libro_id")
     private Libro libro;
+
+    
 }

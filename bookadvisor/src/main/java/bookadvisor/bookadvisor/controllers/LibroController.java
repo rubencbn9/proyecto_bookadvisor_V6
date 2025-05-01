@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import bookadvisor.bookadvisor.Service.FileStorageService;
+import bookadvisor.bookadvisor.Service.GeneroService;
 import bookadvisor.bookadvisor.Service.LibroService;
 import bookadvisor.bookadvisor.Service.ValoracionService;
 import bookadvisor.bookadvisor.domain.Genero;
@@ -37,6 +40,9 @@ public class LibroController {
     ValoracionService valoracionService;
 
     @Autowired
+    GeneroService generoService;
+
+    @Autowired
     FileStorageService fileStorageService;
 
     @GetMapping({ "/list" })
@@ -49,6 +55,9 @@ public class LibroController {
                 case 2 -> model.addAttribute("msg", "Formulario incorrecto");
             }
         }
+
+        //obtenermos los generos
+        model.addAttribute("listaGeneros", generoService.obtenerGeneros());
 
         // Obtenemos la lista de libros DTO
         List<LibroDTO> listaLibros = libroService.convertLibroToDto(libroService.obtenerTodos());
@@ -94,13 +103,13 @@ public class LibroController {
           
             medias.put(id, media);
             model.addAttribute("medias", medias);
-
             model.addAttribute("libro", libro);
             model.addAttribute("media", media);
             model.addAttribute("sumaPuntos", sumaPuntos);
             model.addAttribute("cantidadVotantes", cantidadVotantes);
             model.addAttribute("valoraciones", valoraciones);
             model.addAttribute("votantes", votantes);
+
 
             return "bookView";
         } catch (RuntimeException e) {
@@ -112,6 +121,7 @@ public class LibroController {
     @GetMapping("/nuevo")
     public String showNew(Model model) {
         model.addAttribute("libroForm", new Libro());
+        model.addAttribute("listaGeneros", generoService.obtenerGeneros());
         return "newBookView";
     }
 
@@ -179,12 +189,15 @@ public class LibroController {
                 throw new RuntimeException("libro no encontrado");
             }
             model.addAttribute("libroForm", libro);
+            model.addAttribute("listaGeneros", generoService.obtenerGeneros());
             return "editFormView";
         } catch (RuntimeException e) {
             model.addAttribute("error", e.getMessage());
             return "bookListView";
         }
     }
+
+    private static final Logger logger = LoggerFactory.getLogger(LibroController.class);
 
     @PostMapping("/editar/{id}/submit")
     public String showEditSubmit(@PathVariable Long id, @RequestParam MultipartFile portada, @Valid Libro libroForm,
@@ -199,7 +212,7 @@ public class LibroController {
             }
             return "redirect:/libro/list";
         } catch (RuntimeException e) {
-            // Si se lanza una excepción de salario, redirigimos con el mensaje adecuado
+            logger.error("Error al editar el libro con ID " + id, e);
             return "redirect:/?numMsg=3";
         }
     }

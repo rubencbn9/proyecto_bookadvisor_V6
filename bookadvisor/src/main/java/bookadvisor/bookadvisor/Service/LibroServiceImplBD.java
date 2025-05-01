@@ -11,6 +11,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -135,34 +137,78 @@ public class LibroServiceImplBD implements LibroService {
     }
     
 
-    public Libro editar(Libro libro, MultipartFile file) {
-        // try  {
-        //     borrarImagen(libro.getId());
-        //     libroRepository.save(libro);
-        //     return libro;
-        // } catch (Exception e) {
-        //     throw new RuntimeException("Error al editar el libro con ID");
-        // }
+    private static final Logger logger = LoggerFactory.getLogger(LibroService.class);
 
-        borrarImagen(libro.getId());
-        if(!file.isEmpty()){
-            try{
-                String nombreImagen= fileStorageService.store(file);
-                libro.setRutaFoto(nombreImagen);
-            }catch(Exception e){
+    // public Libro editar(Libro libro, MultipartFile file) {
+    //     try {
+    //         logger.info("Iniciando edición del libro con ID: {}", libro.getId());
+    
+    //         // Primero, borramos la imagen actual (si existe)
+    //         borrarImagen(libro.getId());
+    
+    //         // Si el archivo no está vacío, tratamos de almacenar la nueva imagen
+    //         if (!file.isEmpty()) {
+    //             try {
+    //                 String nombreImagen = fileStorageService.store(file);
+    //                 libro.setRutaFoto(nombreImagen); // Establecemos la nueva ruta de la imagen
+    //                 logger.info("Imagen almacenada con éxito para el libro con ID: {}", libro.getId());
+    //             } catch (Exception e) {
+    //                 logger.error("Error al almacenar la imagen para el libro con ID: {}", libro.getId(), e);
+    //                 throw new RuntimeException("Error al almacenar la imagen para el libro con ID " + libro.getId(), e);
+    //             }
+    //         }
+    
+    //         // Guardamos el libro actualizado en la base de datos
+    //         logger.info("Guardando libro con ID: {}", libro.getId());
+    //         return libroRepository.save(libro);
+    
+    //     } catch (Exception e) {
+    //         logger.error("Error al editar el libro con ID: {}", libro.getId(), e);
+    //         throw new RuntimeException("Error al editar el libro con ID " + libro.getId(), e);
+    //     }
+    // }
+    
+
+    public Libro editar(Libro libro, MultipartFile file) {
+        // No importa si el libro no tiene foto, no borramos nada si no existe
+        // Solo verificamos si se ha cargado una nueva foto
+        if (!file.isEmpty()) {
+            try {
+                // Si ya hay una foto anterior, la podemos sobrescribir
+                borrarImagen(libro.getId());  // Intentar borrar la foto si existe
+                String nombreImagen = fileStorageService.store(file);  // Guardar la nueva imagen
+                libro.setRutaFoto(nombreImagen);  // Asignar la nueva ruta de la imagen
+            } catch (Exception e) {
                 throw new RuntimeException("Error al añadir el libro con ID " + libro.getId(), e);
-            }        
+            }
         }
-        return libroRepository.save(libro);
+        return libroRepository.save(libro);  // Guardar el libro con la nueva foto si la hubo
     }
+
+    public void borrarImagen(String rutaFoto) {
+        if (rutaFoto != null && !rutaFoto.isEmpty()) {
+            try {
+                // Intentar borrar el archivo en la ruta especificada
+                fileStorageService.delete(rutaFoto);  
+            } catch (Exception e) {
+                // Si no se puede borrar, registrar el error (opcional)
+                logger.warn("No se pudo borrar la imagen: {}", rutaFoto);
+            }
+        }
+    }
+    
 
     public boolean borrar(Long id) {
         try {
-            Libro libro = obtenerPorId(id);
+            // Libro libro = obtenerPorId(id);
+            Libro libro = libroRepository.findById(id).orElse(null);
             if (libro == null) {
                 return false;
             }
-            borrarImagen(id);
+          
+            if(libro.getRutaFoto()!=null){
+                borrarImagen(id);
+            }
             libroRepository.delete(libro);
             return true;
         } catch (Exception e) {

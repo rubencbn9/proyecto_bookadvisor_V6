@@ -17,6 +17,8 @@ public interface ValoracionRepository extends JpaRepository<Valoracion, Long>{
 
     List<Valoracion> findByLibroId(Long id);
 
+    List<Valoracion> findByUsuarioId(Long id);
+
      @Query("SELECT AVG(v.puntuacion) FROM Valoracion v WHERE v.libro.id = :libroId")
     Double mediaPorLibro(@Param("libroId") Long libroId);
 }

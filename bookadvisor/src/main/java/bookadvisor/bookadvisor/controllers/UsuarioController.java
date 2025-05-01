@@ -42,32 +42,48 @@ public class UsuarioController {
 
     @GetMapping("/nuevo")
     public String mostrarFormularioDeCreacion(Model model) {
-        model.addAttribute("usuarioForm", new Usuario());
+        Usuario usuario = new Usuario();
+        usuario.setRol(Rol.USER);
+        model.addAttribute("usuarioForm",  usuario);
          model.addAttribute("roles", Rol.values());
         return "newUsuarioView";
     }
 
     @PostMapping("/nuevo/submit")
-    public String crearUsuario(@Valid Usuario usuarioForm, BindingResult BindingResult) {
+    public String crearUsuario(@Valid Usuario usuarioForm, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "newUsuarioView"; // Vuelve a mostrar el formulario con los errores
+        }
         usuarioService.añadir(usuarioForm);
         return "redirect:/usuario/";
     }
+    
 
     @GetMapping("/editar/{id}")
-    public String mostrarFormularioDeEdicion(@PathVariable int id, Model model) {
+    public String mostrarFormularioDeEdicion(@PathVariable Long id, Model model) {
         Usuario usuario = usuarioService.obtenerPorId(id);
-        model.addAttribute("usuario", usuario);
-        return "newUsuarioView";
+        if (usuario != null) {
+            model.addAttribute("usuarioForm", usuario);  // Usar 'usuarioForm' como atributo en el modelo
+            model.addAttribute("roles", Rol.values());    // Pasa los roles para el selector
+            return "editUsuarioView"; // Vista para editar usuario
+        } else {
+            return "redirect:/usuario/";  // Redirige si no se encuentra el usuario
+        }
     }
-
+    
     @PostMapping("/editar/submit")
-    public String editarUsuario(@ModelAttribute Usuario usuario) {
-        usuarioService.editar(usuario);
-        return "redirect:/usuario";
+    public String editarUsuario(@Valid @ModelAttribute("usuarioForm") Usuario usuarioForm, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "editUsuarioView";  // Si hay errores, vuelve a mostrar el formulario
+        }
+        usuarioService.editar(usuarioForm);  // Llama al servicio para actualizar el usuario
+        return "redirect:/usuario/";  // Redirige a la lista de usuarios
     }
+    
+    
 
     @PostMapping("/borrar/{id}")
-    public String borrarUsuario(@PathVariable int id) {
+    public String borrarUsuario(@PathVariable Long id) {
         usuarioService.borrar(id);
         return "redirect:/usuario";
     }

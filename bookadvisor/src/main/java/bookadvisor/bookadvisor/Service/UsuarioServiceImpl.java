@@ -93,16 +93,23 @@ public class UsuarioServiceImpl implements UsuarioService{
     }
     }
 
-    public Usuario editar(Usuario usuario){
+    public Usuario editar(Usuario usuario) {
         Usuario usuarioEncontrado = usuarioRepository.findById(usuario.getId()).orElse(null);
         if (usuarioEncontrado == null) {
-            return null;
+            return null;  // Retorna null si no se encuentra el usuario
         }
-        usuarioRepository.save(usuarioEncontrado); // Si lo encuentra, lo sustituye
-        return usuario;
+        
+        // Actualiza los campos del usuario encontrado con los datos del formulario
+        usuarioEncontrado.setNombre(usuario.getNombre());
+        usuarioEncontrado.setEmail(usuario.getEmail());
+        usuarioEncontrado.setRol(usuario.getRol());
+    
+        // Guarda el usuario actualizado en la base de datos
+        return usuarioRepository.save(usuarioEncontrado);
     }
+    
 
-    public boolean borrar(int id){
+    public boolean borrar(Long id){
         Usuario usuario = obtenerPorId(id);
         if (usuario == null) {
             return false;
@@ -137,7 +144,7 @@ public class UsuarioServiceImpl implements UsuarioService{
         }
     }
 
-    public Usuario obtenerPorId(int id){
+    public Usuario obtenerPorId(Long id){
         for (Usuario usuario : usuarioRepository.findAll()) {
             if (usuario.getId() == id) {
 

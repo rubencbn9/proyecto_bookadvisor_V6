@@ -18,13 +18,13 @@ public interface UsuarioService {
 
      Usuario editar(Usuario usuario);
 
-     boolean borrar(int id);
+     boolean borrar(Long id);
 
      List<Usuario> buscarPorNombre(String textoNombre);
 
      String store(MultipartFile file, String titulo);
 
-     Usuario obtenerPorId(int id);
+     Usuario obtenerPorId(Long id);
 
      void delete(String filename);
 

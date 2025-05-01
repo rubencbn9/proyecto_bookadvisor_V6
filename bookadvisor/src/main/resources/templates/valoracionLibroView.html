@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="https://thymeleaf.org">
+<html lang="es" xmlns:sec="https://thymeleaf.org/thymeleaf-extras-springsecurity">
+<head>
+    <meta charset="UTF-8">
+    <title>Valoraciones por Libro</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+</head>
+<body>
+
+    <!-- Fragmento de navegación -->
+    <div th:replace="~{/fragments/navBar.html::navegacion}"></div>
+
+    <div class="container mt-5">
+        <h2 class="mb-4">Valoraciones del Libro</h2>
+
+        <div th:if="${listaLibro != null and !listaLibro.isEmpty()}">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Puntuación</th>
+                        <th>Comentario</th>
+                       
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="valoracion : ${listaLibro}">
+                        <td th:text="${valoracion.usuario.nombre}">Nombre Usuario</td>
+                        <td th:text="${valoracion.puntuacion}">5</td>
+                        <td th:text="${valoracion.comentario}">Comentario</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div th:if="${listaLibro == null or listaLibro.isEmpty()}">
+            <p class="alert alert-warning">Este libro aún no tiene valoraciones.</p>
+        </div>
+
+        <a th:href="@{/libro/list}" class="btn btn-secondary mt-3">Volver a Libros</a>
+    </div>
+
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

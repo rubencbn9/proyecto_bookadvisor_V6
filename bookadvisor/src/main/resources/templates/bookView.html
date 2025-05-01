@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="https://thymeleaf.org">
+<html lang="es" xmlns:sec="https://thymeleaf.org/thymeleaf-extras-springsecurity">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,6 +36,8 @@
     </style>
 </head>
 <body>
+    <nav th:replace="~{/fragments/navBar.html::navegacion}"></nav>
+
     <h1>Detalle del Libro</h1>
 
     <div class="container">
@@ -42,7 +45,6 @@
             <div class="col-12">
                 <div class="d-flex justify-content-between mb-3">
                     <h3 th:text="${libro.titulo}">Título del libro</h3>
-                    <a th:href="@{/}" class="btn btn-link mt-3">Inicio</a>
                 </div>
 
                 <!-- Información del libro -->
@@ -60,7 +62,8 @@
                         <p><strong>Sinopsis:</strong> <span th:text="${libro.sinopsis}">Sinopsis</span></p>
                         <p><strong>Idioma:</strong> <span th:text="${libro.idioma}">Idioma</span></p>
                         <p><strong>Fecha de registro:</strong> <span th:text="${libro.fechaDeAlta}">Fecha de alta</span></p>
-                        <p><strong>Género:</strong> <span th:text="${libro.genero}">Género</span></p>
+                        <p><strong>Género:</strong>  <span th:text="${libro.genero != null ? libro.genero.nombre : 'Sin género'}">Género</span>
+                        </p>
                         
                         <!-- Mostrar la cantidad de votantes y la suma de puntos -->
                         <p><strong>Cantidad de Votantes:</strong> 
@@ -81,7 +84,8 @@
                         <!-- Botones de acción (Editar y Borrar) -->
                         <div class="buttons">
                             <a th:href="@{/libro/editar/{id}(id=${libro.id})}" class="btn btn-warning btn-sm">Editar</a>
-                            <form th:action="@{/libro/{id}/borrar(id=${libro.id})}" method="post" class="d-inline">
+                            <a th:href="@{/valoracion/libro/{id}(id=${libro.id})}" class="btn btn-warning btn-sm">Valoraciones</a>
+                            <form th:action="@{/libro/borrar/{id}(id=${libro.id})}" class="d-inline">
                                 <input type="hidden" name="_method" value="delete"/>
                                 <button type="submit" class="btn btn-danger btn-sm">Borrar</button>
                             </form>

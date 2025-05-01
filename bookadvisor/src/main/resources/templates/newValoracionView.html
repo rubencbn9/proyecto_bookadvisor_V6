@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="https://thymeleaf.org">
+<html lang="es" xmlns:sec="https://thymeleaf.org/thymeleaf-extras-springsecurity">
 <head>
     <meta charset="UTF-8">
     <title>Nueva Valoración</title>
@@ -10,6 +11,8 @@
 <nav th:replace="~{/fragments/navBar.html::navegacion}"></nav>
 
 <div class="container mt-5">
+    <nav th:replace="~{/fragments/navBar.html::navegacion}"></nav>
+
     <h1 class="mb-4">Valorar libro: <span th:text="${libro.titulo}"></span></h1>
 
     <form th:action="@{/valoracion/nueva/submit}" th:object="${valoracionForm}" method="post">

@@ -27,4 +27,6 @@ public interface ValoracionService {
     Map<Long, Double> obtenerMediaDePuntuacionPorLibro();
 
     List<Valoracion> obtenerPorLibroId (Long id);
+    
+    List<Valoracion>obtenerPorUsuario (Long id);
 }

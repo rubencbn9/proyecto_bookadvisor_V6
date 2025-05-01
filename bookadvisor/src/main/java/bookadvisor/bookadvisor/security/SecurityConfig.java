@@ -40,8 +40,10 @@ public class SecurityConfig {
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // Recursos estáticos
                 .requestMatchers("/signin", "/public/**", "/h2-console/**", "/", "/generos/").permitAll()
-                .requestMatchers( "/valoraciones/**").hasAnyRole("USER", "MANAGER", "ADMINISTRADOR")
-                .requestMatchers("/usuarios/**").hasRole("ADMINISTRADOR")
+                .requestMatchers( "/valoracion/**").hasAnyRole("USER", "MANAGER", "ADMINISTRADOR")
+                .requestMatchers("/genero/**").hasRole("ADMINISTRADOR")
+                .requestMatchers("/usuario/nuevo").permitAll()
+                .requestMatchers("/usuario/**").hasRole("ADMINISTRADOR")
                 .requestMatchers("/**").permitAll() // Administradores tienen acceso total)
                  .anyRequest().authenticated())
 
@@ -49,7 +51,7 @@ public class SecurityConfig {
                         .loginPage("/signin") // Mapeo para mostrar el formulario de login
                         .loginProcessingUrl("/perform_login") // Ruta post de /signin
                         .failureUrl("/signin?error") // Volver a signin con mensaje de error
-                        .defaultSuccessUrl("/", true).permitAll())
+                        .defaultSuccessUrl("/public/", true).permitAll())
                 .logout(logout -> logout
                         .logoutSuccessUrl("/signin?logout").permitAll())
                 .csrf(csrf -> csrf.disable())

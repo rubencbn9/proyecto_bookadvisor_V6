@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="https://thymeleaf.org">
+<html lang="es" xmlns:sec="https://thymeleaf.org/thymeleaf-extras-springsecurity">
+<head>
+    <meta charset="UTF-8">
+    <title>Valoraciones del Usuario</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+</head>
+<body>
+    <nav th:replace="~{/fragments/navBar.html::navegacion}"></nav>
+
+    <div class="container mt-5">
+        <h2 class="mb-4 text-center">Valoraciones del Usuario</h2>
+
+        <div th:if="${listaUsuario.isEmpty()}">
+            <div class="alert alert-warning text-center">
+                Este usuario no ha realizado ninguna valoración.
+            </div>
+        </div>
+
+        <div class="row" th:if="${!listaUsuario.isEmpty()}">
+            <div class="col-md-8 offset-md-2">
+                <div class="list-group">
+                    <div th:each="valoracion : ${listaUsuario}" class="list-group-item list-group-item-action mb-2 shadow-sm rounded">
+                        <h5 th:text="${valoracion.libro.titulo}" class="mb-2">Título del libro</h5>
+                        <p th:text="${valoracion.comentario}">Comentario de la valoración</p>
+                        <small class="text-muted">
+                            Puntuación: <span th:text="${valoracion.puntuacion}">5</span>/5
+                            &nbsp;|&nbsp;
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

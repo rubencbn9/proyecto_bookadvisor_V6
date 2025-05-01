@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-
+<html lang="es" xmlns:th="https://thymeleaf.org">
+<html lang="es" xmlns:sec="https://thymeleaf.org/thymeleaf-extras-springsecurity">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,6 +21,8 @@
 
 <body>
     <div class="container mt-5">
+        <nav th:replace="~{/fragments/navBar.html::navegacion}"></nav>
+
         <h2>Introduce tus credenciales:</h2>
         <div th:if="${param.error}" class="alert alert-danger">Credenciales incorrectas</div>
         <div th:if="${param.logout}" class="alert alert-info">Te has desconectado</div>
@@ -34,7 +36,7 @@
                 <input type="password" class="form-control" name="password" placeholder="Password" required/>
             </div>
             <button type="submit" class="btn btn-custom-primary">Log in</button>
-            <a class="btn btn-custom-secondary mt-3" th:href="@{/}">Inicio</a>
+            <a class="btn btn-custom-secondary mt-3" th:href="@{/public/}">Inicio</a>
         </form>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

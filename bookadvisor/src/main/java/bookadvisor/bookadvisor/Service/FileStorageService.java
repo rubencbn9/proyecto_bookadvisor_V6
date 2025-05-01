@@ -38,6 +38,17 @@ public class FileStorageService {
         }
     }
 
+    // public void delete(String filename) throws RuntimeException {
+    //     try {
+    //         Path file = rootLocation.resolve(filename);
+    //         if (!Files.exists(file))
+    //             throw new RuntimeException("No existe el fichero");
+    //         Files.delete(file);
+    //     } catch (IOException ioe) {
+    //         throw new RuntimeException("Error en borrado");
+    //     }
+    // }
+
     public void delete(String filename) throws RuntimeException {
         try {
             Path file = rootLocation.resolve(filename);
@@ -49,6 +60,7 @@ public class FileStorageService {
         }
     }
 
+    
     public Resource loadAsResource(String filename) throws RuntimeException {
         try {
             Path file = rootLocation.resolve(filename);
